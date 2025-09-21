@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vpromc
-  lebels:
+  labels:
     app: vpromc
 spec:
   selector:
@@ -20,4 +20,5 @@ spec:
         ports:
         - containerPort: 11211
         - name: vpromc-port
+
 
