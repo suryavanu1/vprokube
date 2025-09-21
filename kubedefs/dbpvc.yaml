@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-pv-claim
+  lebels:
+    app: vprodb
+spec:
+  accessModes:
+    - ReadWriteOnce # Volume can be mounted as read-write by a single node
+  resources:
+    requests:
+      storage: 3Gi # Requesting 3Gi of storage space
+  storageClassName: default # Specify the storage class to use

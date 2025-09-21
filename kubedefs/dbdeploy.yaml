@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vprodb
+  labels:
+    app: vprodb
+spec:
+  replicas: 1 # Number of pod replicas
+  selector:
+    matchLabels:
+      app: vprodb # Selector to match pods with this label
+  template:
+    metadata:
+      labels:
+        app: vprodb # Label for the pod
+    spec:
+      containers:
+        - name: vprodb
+          image: vprocontainers/vprofiledb # Database image
+          volumeMounts:
+            - mountPath: /var/lib/mysql # Mount path inside the container
+              name: vpro-db-data
+          ports:
+            - containerPort: 3306 # Exposing PostgreSQL default port
+            - name: vprodb-port
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets # Reference to the secret containing the password
+                  key: db-pass  # Key in the secret
+      volumes:
+        - name: vpro-db-data
+          persistentVolumeClaim:
+            claimName: db-pv-claim # Reference to the PVC for persistent storage
+      initContainers:
+        - name: busybox
+          image: busybox:latest
+          args: ["rm", "-rf", "/var/lib/mysql/lost+found"]
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: vpro-db-data

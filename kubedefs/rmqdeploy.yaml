@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vprormq
+  labels:
+    app: vprormq
+spec:
+  replicas: 1 # Number of pod replicas
+  selector:
+    matchLabels:
+      app: vprormq # Selector to match pods with this label
+  template:
+    metadata:
+      labels:
+        app: vprormq # Label for the pod
+    spec:
+      containers:
+        - name: vprormq
+          image: rabbitmq # RabbitMQ image
+          
+          ports:
+            - containerPort: 5672 # Exposing PostgreSQL default port
+            - name: vprormq-port
+          env:
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets # Reference to the secret containing the password
+                  key: rmq-pass  # Key in the secret
+            - name: RABBITMQ_DEFAULT_USER
+              value: "guest" # Default username
+      

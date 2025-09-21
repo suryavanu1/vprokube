@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vpro-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClaassName: nginx
+  rules:    
+  - host: vprofile.vanudevops.xyz # Replace with your domain    
+    http:
+      paths:
+       - path: /
+         pathType: Prefix
+         backend:
+           service:
+             name: vproapp-service  # Name of the service to route to
+             port:
+               number: 8080         # Port of the service
