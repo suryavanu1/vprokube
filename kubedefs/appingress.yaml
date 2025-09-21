@@ -5,7 +5,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
-  ingressClaassName: nginx
+  ingressClassName: nginx
   rules:    
   - host: vprofile.vanudevops.xyz # Replace with your domain    
     http:
@@ -16,4 +16,5 @@ spec:
            service:
              name: vproapp-service  # Name of the service to route to
              port:
+
                number: 8080         # Port of the service
